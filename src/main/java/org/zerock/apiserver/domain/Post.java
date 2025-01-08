@@ -3,6 +3,8 @@ package org.zerock.apiserver.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Builder
@@ -18,7 +20,7 @@ public class Post {
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private Member user;
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "board_id", nullable = false)
@@ -57,4 +59,7 @@ public class Post {
     public void preUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comment = new ArrayList<>();
 }
