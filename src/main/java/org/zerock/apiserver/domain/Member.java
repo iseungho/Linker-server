@@ -15,7 +15,7 @@ import java.util.List;
 @ToString(exclude = "profileImage")
 public class Member {
 
-    // mno & nickname을 id, username으로 바꾸기에는 시간이 오래 걸려 유지하겠습니다
+    // mno & nickname <- id, username
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long mno;   // id
@@ -43,7 +43,7 @@ public class Member {
 
     // `fetch = FetchType.EAGER, orphanRemoval = true` 추가해서 지연 로딩에서 즉시 로딩으로 수정
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> posts = new ArrayList<>();
+    private List<Post> post = new ArrayList<>();
 
     @Builder.Default
     private MemberRole memberRole = MemberRole.USER;

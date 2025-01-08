@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 import org.zerock.apiserver.domain.Member;
 
+import java.util.Optional;
+
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
     @Query("SELECT m " +
@@ -19,4 +21,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
             " GROUP BY m, p")
     Object getMemberByMno(@Param("mno") Long mno);
 
+    Optional<Member> findByNickname(String nickname);
 }

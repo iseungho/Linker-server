@@ -3,6 +3,8 @@ package org.zerock.apiserver.dto;
 import lombok.*;
 import org.zerock.apiserver.domain.MemberRole;
 
+import java.time.LocalDateTime;
+
 @Data
 @ToString
 @Builder
@@ -22,4 +24,7 @@ public class MemberDTO {
 
     private MemberRole role;
 
+    private LocalDateTime createdAt;
+
+    private String profileImageUrl;
 }
