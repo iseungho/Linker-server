@@ -7,5 +7,5 @@ import org.zerock.apiserver.domain.Post;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> finByPost(Post post);
+    List<Comment> findByPost(Post post);
 }
