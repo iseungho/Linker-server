@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Setter
 @ToString(exclude = {"post", "user"})
 public class Comment {
 
@@ -35,5 +36,7 @@ public class Comment {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
+
+
 }
 
