@@ -66,7 +66,7 @@ public class CustomSecurityConfig {
             config.failureHandler(new APILoginFailHandler());
         });
 
-        http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);
+//        http.addFilterBefore(new JWTCheckFilter(), UsernamePasswordAuthenticationFilter.class);
 
         http.exceptionHandling(httpSecurityExceptionHandlingConfigurer -> {
             httpSecurityExceptionHandlingConfigurer.accessDeniedHandler(new CustomAccessDeniedHandler());

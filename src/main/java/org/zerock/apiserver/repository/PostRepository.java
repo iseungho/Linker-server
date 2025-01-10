@@ -6,5 +6,5 @@ import org.zerock.apiserver.domain.Post;
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByBoardId(Long id);
+    List<Post> findByPostType(String postType);
 }
