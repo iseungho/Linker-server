@@ -25,6 +25,8 @@ public class Member {
 
     private boolean social;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     @Builder.Default
     private MemberRole memberRole = MemberRole.USER;
 
