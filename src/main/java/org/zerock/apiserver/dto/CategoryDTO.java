@@ -6,11 +6,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class ItemCategoryDTO {
-    private int id;
-
+public class CategoryDTO {
+    private Long id;
     private String name;
-
     private String description;
 }

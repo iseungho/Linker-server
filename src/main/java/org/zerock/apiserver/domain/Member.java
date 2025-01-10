@@ -3,10 +3,6 @@ package org.zerock.apiserver.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Builder
 @AllArgsConstructor
@@ -15,13 +11,9 @@ import java.util.List;
 @ToString(exclude = "profileImage")
 public class Member {
 
-    // mno & nickname <- id, username
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long mno;   // id
-
-    @Column(nullable = false, unique = true)
-    private String nickname;    // username
+    private Long mno;
 
     @Column(unique = true, nullable = false)
     private String email;
@@ -29,22 +21,12 @@ public class Member {
     @Column(nullable = false)
     private String password;
 
+    private String nickname;
+
     private boolean social;
 
-    @Column(name = "created_at", nullable = false, updatable = false)
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void prePersist() {
-        if (this.createdAt == null) {
-            this.createdAt = LocalDateTime.now();
-        }
-    }
-
-    // `fetch = FetchType.EAGER, orphanRemoval = true` 추가해서 지연 로딩에서 즉시 로딩으로 수정
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Post> post = new ArrayList<>();
-
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     @Builder.Default
     private MemberRole memberRole = MemberRole.USER;
 
@@ -79,4 +61,8 @@ public class Member {
         this.profileImage = null;
     }
 
+    // 추가된 메서드
+    public MemberRole getRole() {
+        return memberRole;
+    }
 }

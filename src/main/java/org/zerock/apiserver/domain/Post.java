@@ -2,64 +2,68 @@ package org.zerock.apiserver.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@ToString(exclude = {"user", "comments", "itemCategory", "region"})
+@ToString
+@Table(name = "post")
 public class Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long pno;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "mno", nullable = false)
     private Member member;
-
-    @ManyToOne
-    @JoinColumn(name = "board_id", nullable = false)
-    private Board board;
 
     @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = "item_category_id")
-    private ItemCategory itemCategory;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "category_id", nullable = true)
+    private Category category; // 물품의 특성
 
-    @ManyToOne
-    @JoinColumn(name = "region_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id", nullable = true)
     private Region region;
 
+    @Column(nullable = true)
     private String location;
 
+    @Column(nullable = true)
     private String photoUrl;
 
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private LocalDateTime created;
 
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
+    @Column(nullable = true)
+    private LocalDateTime updated;
+
+    @Column(nullable = false)
+    private String postType;  // "LOST", "FOUND", "FREE"
 
     @PrePersist
     public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+        this.created = LocalDateTime.now();
     }
 
-    @PreUpdate
-    public void preUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    // 추가된 메서드
+    public void changeTitle(String title) {
+        this.title = title;
+        this.updated = LocalDateTime.now(); // 수정 시각 업데이트
     }
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comment = new ArrayList<>();
+    public void changeContent(String content) {
+        this.content = content;
+        this.updated = LocalDateTime.now(); // 수정 시각 업데이트
+    }
 }

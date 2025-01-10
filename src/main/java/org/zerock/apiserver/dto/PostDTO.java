@@ -5,26 +5,19 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 @Data
-@ToString
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class PostDTO {
-    private Long id;
-
+    private Long pno;
+    private Long mno;
     private String title;
-
     private String content;
-
-    private String boardName;
-
-    private String nickname;
-
-    private String regionName;
-
-    private String itemCategoryName;
-
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
+    private Long categoryId;
+    private Long regionId;
+    private String location;
+    private String photoUrl;
+    private LocalDateTime created;
+    private LocalDateTime updated;
+    private String postType;  // "LOST", "FOUND", "FREE"
 }

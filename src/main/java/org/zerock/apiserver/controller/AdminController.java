@@ -1,8 +1,6 @@
 package org.zerock.apiserver.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.zerock.apiserver.dto.MemberDTO;
 import org.zerock.apiserver.dto.PostDTO;
@@ -10,48 +8,45 @@ import org.zerock.apiserver.dto.CommentDTO;
 import org.zerock.apiserver.service.AdminService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/api/admin")
 @RequiredArgsConstructor
-@Log4j2
+@RequestMapping("/api/admin")
 public class AdminController {
 
     private final AdminService adminService;
 
     @GetMapping("/members")
-    public ResponseEntity<List<MemberDTO>> getAllMembers() {
-        List<MemberDTO> members = adminService.getAllMembers();
-        return ResponseEntity.ok(members);
+    public List<MemberDTO> getAllMembers() {
+        return adminService.getAllMembers();
     }
 
-    @DeleteMapping("/members/{id}")
-    public ResponseEntity<Void> deleteMember(@PathVariable Long id) {
-        adminService.deleteMember(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/members/{mno}")
+    public Map<String, String> deleteMember(@PathVariable("mno") Long mno) {
+        adminService.deleteMember(mno);
+        return Map.of("RESULT", "SUCCESS");
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<PostDTO>> getAllPosts() {
-        List<PostDTO> posts = adminService.getAllPosts();
-        return ResponseEntity.ok(posts);
+    public List<PostDTO> getAllPosts() {
+        return adminService.getAllPosts();
     }
 
-    @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
-        adminService.deletePost(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/posts/{pno}")
+    public Map<String, String> deletePost(@PathVariable("pno") Long pno) {
+        adminService.deletePost(pno);
+        return Map.of("RESULT", "SUCCESS");
     }
 
     @GetMapping("/comments")
-    public ResponseEntity<List<CommentDTO>> getAllComments() {
-        List<CommentDTO> comments = adminService.getAllComments();
-        return ResponseEntity.ok(comments);
+    public List<CommentDTO> getAllComments() {
+        return adminService.getAllComments();
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
+    public Map<String, String> deleteComment(@PathVariable("id") Long id) {
         adminService.deleteComment(id);
-        return ResponseEntity.noContent().build();
+        return Map.of("RESULT", "SUCCESS");
     }
 }
