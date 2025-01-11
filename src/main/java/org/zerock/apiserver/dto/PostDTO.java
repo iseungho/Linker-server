@@ -20,4 +20,5 @@ public class PostDTO {
     private LocalDateTime created;
     private LocalDateTime updated;
     private String postType;  // "LOST", "FOUND", "FREE"
+    private int commentCount;
 }

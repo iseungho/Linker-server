@@ -1,9 +1,12 @@
 package org.zerock.apiserver.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.zerock.apiserver.domain.Post;
 import org.zerock.apiserver.domain.Member; // Member import 추가
+import org.zerock.apiserver.dto.PageRequestDTO;
+import org.zerock.apiserver.dto.PageResponseDTO;
 import org.zerock.apiserver.dto.PostDTO;
 import org.zerock.apiserver.repository.PostRepository;
 import org.zerock.apiserver.repository.MemberRepository; // MemberRepository import 추가
@@ -22,8 +25,31 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDTO get(Long pno) {
-        Post post = postRepository.findById(pno).orElseThrow(() -> new CustomServiceException("NOT_EXIST_POST"));
-        return entityToDTO(post);
+        Object result = postRepository.getPostByPno(pno);
+        if (result == null) {
+            throw new CustomServiceException("NOT_EXIST_POST");
+        }
+        Object[] arr = (Object[]) result;
+        return entityToDTO((Post) arr[0], ((Number) arr[1]).intValue());
+    }
+
+    @Override
+    public PageResponseDTO<PostDTO> getListByPostType(PageRequestDTO pageRequestDTO, String postType) {
+        Page<Object[]> result;
+
+        result = postRepository.getPagedPostsByPostType(pageRequestDTO, postType);
+
+
+        List<PostDTO> dtoList = result
+                .get()
+                .map(arr -> entityToDTO((Post) arr[0], ((Number) arr[1]).intValue()))
+                .collect(Collectors.toList());
+
+        return PageResponseDTO.<PostDTO>withAll()
+                .dtoList(dtoList)
+                .pageRequestDTO(pageRequestDTO)
+                .totalCount(result.getTotalElements())
+                .build();
     }
 
     @Override
@@ -62,13 +88,6 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDTO> getPostsByType(String postType) {
-        return postRepository.findByPostType(postType).stream()
-                .map(this::entityToDTO)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public Post dtoToEntity(PostDTO postDTO) {
         return Post.builder()
                 .pno(postDTO.getPno())
@@ -80,12 +99,13 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO entityToDTO(Post post) {
+    public PostDTO entityToDTO(Post post, int commentCount) {
         return PostDTO.builder()
                 .pno(post.getPno())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .postType(post.getPostType())
+                .commentCount(commentCount)
                 .build();
     }
 }

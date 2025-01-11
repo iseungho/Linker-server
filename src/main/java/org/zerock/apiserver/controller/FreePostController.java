@@ -2,6 +2,8 @@ package org.zerock.apiserver.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.zerock.apiserver.dto.PageRequestDTO;
+import org.zerock.apiserver.dto.PageResponseDTO;
 import org.zerock.apiserver.dto.PostDTO;
 import org.zerock.apiserver.service.PostService;
 
@@ -41,7 +43,7 @@ public class FreePostController {
     }
 
     @GetMapping("/")
-    public List<PostDTO> getAllFreePosts() {
-        return postService.getPostsByType("FREE");
+    public PageResponseDTO<PostDTO> getAllFreePosts(PageRequestDTO pageRequestDTO) {
+        return postService.getListByPostType(pageRequestDTO,"FREE");
     }
 }
