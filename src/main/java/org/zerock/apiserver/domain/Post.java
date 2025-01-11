@@ -58,7 +58,14 @@ public class Post {
     @PrePersist
     public void prePersist() {
         this.created = LocalDateTime.now();
+        this.updated = LocalDateTime.now(); // 추가
     }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.updated = LocalDateTime.now(); // 수정 시 현재 시간으로 업데이트
+    }
+
 
     // 추가된 메서드
     public void changeTitle(String title) {
