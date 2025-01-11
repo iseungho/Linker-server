@@ -73,6 +73,7 @@ public class AdminServiceImpl implements AdminService {
         return MemberDTO.builder()
                 .mno(member.getMno())
                 .email(member.getEmail())
+                .password(member.getPassword())
                 .nickname(member.getNickname())
                 .role(member.getRole())
                 .build();
@@ -84,6 +85,13 @@ public class AdminServiceImpl implements AdminService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .postType(post.getPostType())
+                .location(post.getLocation())
+                .photoUrl(post.getPhotoUrl())
+                .mno(post.getMember().getMno()) // member로부터 mno 가져오기
+                .categoryId(post.getCategory() != null ? post.getCategory().getId() : null) // categoryId 설정
+                .regionId(post.getRegion() != null ? post.getRegion().getId() : null) // regionId 설정
+                .created(post.getCreated()) // created 설정
+                .updated(post.getUpdated()) // updated 설정
                 .build();
     }
 
@@ -91,6 +99,8 @@ public class AdminServiceImpl implements AdminService {
         return CommentDTO.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
+                .mno(comment.getMember().getMno()) // member에서 mno 가져오기
+                .postId(comment.getPost().getPno()) // post에서 postId 가져오기
                 .build();
     }
 }

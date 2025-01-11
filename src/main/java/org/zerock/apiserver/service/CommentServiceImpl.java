@@ -39,7 +39,6 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = dtoToEntity(commentDTO);
         comment.setMember(member);  // member 필드 설정
         comment.setPost(post);
-        comment.setCreated(LocalDateTime.now());  // created 필드 설정
         comment = commentRepository.save(comment);
         return comment.getId();
     }
@@ -72,6 +71,8 @@ public class CommentServiceImpl implements CommentService {
         return CommentDTO.builder()
                 .id(comment.getId())
                 .content(comment.getContent())
+                .mno(comment.getMember().getMno()) // member에서 mno 가져오기
+                .postId(comment.getPost().getPno()) // post에서 postId 가져오기
                 .build();
     }
 }

@@ -3,13 +3,17 @@ package org.zerock.apiserver.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import org.zerock.apiserver.domain.Category;
 import org.zerock.apiserver.domain.Post;
 import org.zerock.apiserver.domain.Member; // Member import 추가
+import org.zerock.apiserver.domain.Region;
 import org.zerock.apiserver.dto.PageRequestDTO;
 import org.zerock.apiserver.dto.PageResponseDTO;
 import org.zerock.apiserver.dto.PostDTO;
+import org.zerock.apiserver.repository.CategoryRepository;
 import org.zerock.apiserver.repository.PostRepository;
 import org.zerock.apiserver.repository.MemberRepository; // MemberRepository import 추가
+import org.zerock.apiserver.repository.RegionRepository;
 import org.zerock.apiserver.util.CustomServiceException;
 
 import java.time.LocalDateTime;
@@ -22,6 +26,8 @@ public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
     private final MemberRepository memberRepository; // MemberRepository 주입
+    private final CategoryRepository categoryRepository;
+    private final RegionRepository regionRepository;
 
     @Override
     public PostDTO get(Long pno) {
@@ -54,22 +60,32 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public Long register(PostDTO postDTO) {
-        // 회원 정보를 가져옵니다.
         Member member = memberRepository.findById(postDTO.getMno())
                 .orElseThrow(() -> new CustomServiceException("NOT_EXIST_MEMBER"));
 
-        // Post 객체를 생성할 때 member를 설정합니다.
+        Category category = categoryRepository.findById(postDTO.getCategoryId())
+                .orElseThrow(() -> new CustomServiceException("NOT_EXIST_CATEGORY"));
+
+        Region region = regionRepository.findById(postDTO.getRegionId())
+                .orElseThrow(() -> new CustomServiceException("NOT_EXIST_REGION"));
+
         Post post = Post.builder()
                 .title(postDTO.getTitle())
                 .content(postDTO.getContent())
                 .postType(postDTO.getPostType())
-                .member(member) // member 설정
+                .member(member)
+                .location(postDTO.getLocation())
+                .photoUrl(postDTO.getPhotoUrl())
+                .category(category) // category 설정
+                .region(region) // region 설정
                 .created(LocalDateTime.now())
                 .build();
 
         postRepository.save(post);
         return post.getPno();
     }
+
+
 
     @Override
     public void modify(PostDTO postDTO) {
@@ -105,7 +121,15 @@ public class PostServiceImpl implements PostService {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .postType(post.getPostType())
+                .location(post.getLocation())
+                .photoUrl(post.getPhotoUrl())
+                .mno(post.getMember().getMno()) // member로부터 mno 가져오기
+                .categoryId(post.getCategory() != null ? post.getCategory().getId() : null) // categoryId 설정
+                .regionId(post.getRegion() != null ? post.getRegion().getId() : null) // regionId 설정
+                .created(post.getCreated()) // created 설정
+                .updated(post.getUpdated()) // updated 설정
                 .commentCount(commentCount)
                 .build();
     }
+
 }
