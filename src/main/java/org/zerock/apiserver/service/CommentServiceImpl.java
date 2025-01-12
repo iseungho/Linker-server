@@ -80,6 +80,8 @@ public class CommentServiceImpl implements CommentService {
                 .content(comment.getContent())
                 .postId(comment.getPost().getPno()) // post에서 postId 가져오기
                 .mno(comment.getMember().getMno())
+                .created(comment.getCreated()) // created 설정
+                .updated(comment.getUpdated()) // updated 설정
                 .build();
     }
 }
