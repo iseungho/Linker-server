@@ -13,4 +13,8 @@ public interface PostRepository extends JpaRepository<Post, Long>, SearchPostRep
             " WHERE p.pno = :pno" +
             " GROUP BY p")
     Object getPostByPno(@Param("pno") Long pno);
+
+    @Query("SELECT COUNT(p) > 0 FROM Post p WHERE p.title = :title AND p.content = :content")
+    boolean existsByTitleAndContent(@Param("title") String title, @Param("content") String content);
+
 }
