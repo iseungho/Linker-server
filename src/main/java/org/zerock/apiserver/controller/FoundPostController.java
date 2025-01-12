@@ -46,4 +46,9 @@ public class FoundPostController {
     public PageResponseDTO<PostDTO> getAllFoundPosts(PageRequestDTO pageRequestDTO) {
         return postService.getListByPostType(pageRequestDTO,"FOUND");
     }
+
+    @GetMapping("/search")
+    public List<PostDTO> searchPosts(@RequestParam String keyword) {
+        return postService.searchPosts(keyword, "FOUND");
+    }
 }
