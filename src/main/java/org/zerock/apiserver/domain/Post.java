@@ -40,7 +40,7 @@ public class Post {
     @Column(nullable = true)
     private String location;
 
-    @Column(nullable = true)
+    @Column(nullable = true, columnDefinition = "LONGTEXT")
     private String photoUrl;
 
     @Column(nullable = false)

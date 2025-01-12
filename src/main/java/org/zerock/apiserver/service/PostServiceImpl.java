@@ -1,6 +1,7 @@
 package org.zerock.apiserver.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import org.zerock.apiserver.domain.Category;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
@@ -130,6 +132,40 @@ public class PostServiceImpl implements PostService {
                 .updated(post.getUpdated()) // updated 설정
                 .commentCount(commentCount)
                 .build();
+    }
+
+    @Override
+    public void initializePosts(List<PostDTO> postDTOList) {
+        for (PostDTO postDTO : postDTOList) {
+            if (postRepository.existsByTitleAndContent(postDTO.getTitle(), postDTO.getContent())) {
+                log.info("Post with title '{}' already exists. Skipping...", postDTO.getTitle());
+                continue;
+            }
+
+            Member member = memberRepository.findById(postDTO.getMno())
+                    .orElseThrow(() -> new CustomServiceException("NOT_EXIST_MEMBER"));
+
+            Category category = categoryRepository.findById(postDTO.getCategoryId())
+                    .orElseThrow(() -> new CustomServiceException("NOT_EXIST_CATEGORY"));
+
+            Region region = regionRepository.findById(postDTO.getRegionId())
+                    .orElseThrow(() -> new CustomServiceException("NOT_EXIST_REGION"));
+
+            Post post = Post.builder()
+                    .title(postDTO.getTitle())
+                    .content(postDTO.getContent())
+                    .postType(postDTO.getPostType())
+                    .member(member)
+                    .location(postDTO.getLocation())
+                    .photoUrl(postDTO.getPhotoUrl())
+                    .category(category)
+                    .region(region)
+                    .created(LocalDateTime.now())
+                    .build();
+
+            postRepository.save(post);
+            log.info("Post with title '{}' has been saved.", postDTO.getTitle());
+        }
     }
 
 }

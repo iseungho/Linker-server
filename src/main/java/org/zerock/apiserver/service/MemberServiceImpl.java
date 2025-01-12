@@ -5,6 +5,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.zerock.apiserver.domain.Member;
+import org.zerock.apiserver.domain.MemberRole;
 import org.zerock.apiserver.domain.ProfileImage;
 import org.zerock.apiserver.dto.MemberDTO;
 import org.zerock.apiserver.repository.MemberRepository;
@@ -122,6 +123,27 @@ public class MemberServiceImpl implements MemberService {
                 .social(memberDTO.isSocial())
                 .memberRole(memberDTO.getRole())
                 .build();
+    }
+    @Override
+    public void initializeDefaultMember() {
+        String defaultEmail = "admin";
+        if (existsByEmail(defaultEmail)) {
+            log.info("Default admin member already exists.");
+            return;
+        }
+
+        MemberDTO defaultMember = MemberDTO.builder()
+                .mno(1L)
+                .email(defaultEmail)
+                .password("1") // 초기 비밀번호
+                .nickname("Admin")
+                .social(false)
+                .role(MemberRole.ADMIN) // Admin 역할 설정
+                .build();
+
+        // 비밀번호 암호화 및 저장
+        register(defaultMember);
+        log.info("Default admin member has been initialized.");
     }
 
 }

@@ -37,4 +37,6 @@ public interface MemberService {
                 .build();
     }
 
+    void initializeDefaultMember();
+
 }
