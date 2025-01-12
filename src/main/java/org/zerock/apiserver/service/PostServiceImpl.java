@@ -94,6 +94,7 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postDTO.getPno()).orElseThrow(() -> new CustomServiceException("NOT_EXIST_POST"));
         post.changeTitle(postDTO.getTitle());
         post.changeContent(postDTO.getContent());
+        post.changeLocation(postDTO.getLocation());
         postRepository.save(post);
     }
 

@@ -77,4 +77,9 @@ public class Post {
         this.content = content;
         this.updated = LocalDateTime.now(); // 수정 시각 업데이트
     }
+
+    public void changeLocation(String location) {
+        this.location = location;
+        this.updated = LocalDateTime.now(); // 수정 시각 업데이트
+    }
 }
