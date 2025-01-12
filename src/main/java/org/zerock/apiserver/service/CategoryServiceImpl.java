@@ -14,6 +14,8 @@ public class CategoryServiceImpl implements CategoryService {
         saveCategoryIfNotExists("glove", "Description for glove");
         saveCategoryIfNotExists("smartPhone", "Description for smartphone");
         saveCategoryIfNotExists("earphones", "Description for earphones");
+        saveCategoryIfNotExists("bag", "Description for bag");
+        saveCategoryIfNotExists("keyring", "Description for keyring");
     }
 
     public void saveCategoryIfNotExists(String name, String description) {

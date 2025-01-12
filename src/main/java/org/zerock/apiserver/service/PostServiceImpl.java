@@ -119,7 +119,6 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDTO entityToDTO(Post post, int commentCount) {
         return PostDTO.builder()
-                .pno(post.getPno())
                 .title(post.getTitle())
                 .content(post.getContent())
                 .postType(post.getPostType())

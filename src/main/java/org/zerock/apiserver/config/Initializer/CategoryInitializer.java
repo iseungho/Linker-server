@@ -1,4 +1,4 @@
-package org.zerock.apiserver.config;
+package org.zerock.apiserver.config.Initializer;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
