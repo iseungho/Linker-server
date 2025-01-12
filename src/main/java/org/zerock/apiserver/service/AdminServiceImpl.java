@@ -99,7 +99,7 @@ public class AdminServiceImpl implements AdminService {
         return CommentDTO.builder()
                 .cno(comment.getCno())
                 .content(comment.getContent())
-                .writerId(comment.getMember().getMno()) // member에서 mno 가져오기
+                .mno(comment.getMember().getMno()) // member에서 mno 가져오기
                 .postId(comment.getPost().getPno()) // post에서 postId 가져오기
                 .build();
     }

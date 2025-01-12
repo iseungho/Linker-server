@@ -37,7 +37,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public Long register(CommentDTO commentDTO) {
         // Member 엔티티를 조회하여 설정
-        Member member = memberRepository.findById(commentDTO.getWriterId())
+        Member member = memberRepository.findById(commentDTO.getMno())
                 .orElseThrow(() -> new CustomServiceException("NOT_EXIST_MEMBER"));
         // Post 엔티티를 조회하여 설정
         Post post = postRepository.findById(commentDTO.getPostId())
@@ -79,7 +79,7 @@ public class CommentServiceImpl implements CommentService {
                 .cno(comment.getCno())
                 .content(comment.getContent())
                 .postId(comment.getPost().getPno()) // post에서 postId 가져오기
-                .writerId(comment.getMember().getMno())
+                .mno(comment.getMember().getMno())
                 .build();
     }
 }
