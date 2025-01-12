@@ -21,4 +21,6 @@ public interface PostService {
     Post dtoToEntity(PostDTO postDTO);
 
     PostDTO entityToDTO(Post post, int commentCount);
+
+    void initializePosts(List<PostDTO> postDTOList);
 }
