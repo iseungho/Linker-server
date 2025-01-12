@@ -97,9 +97,9 @@ public class AdminServiceImpl implements AdminService {
 
     private CommentDTO entityToDTO(Comment comment) {
         return CommentDTO.builder()
-                .id(comment.getId())
+                .cno(comment.getCno())
                 .content(comment.getContent())
-                .mno(comment.getMember().getMno()) // member에서 mno 가져오기
+                .writerId(comment.getMember().getMno()) // member에서 mno 가져오기
                 .postId(comment.getPost().getPno()) // post에서 postId 가져오기
                 .build();
     }

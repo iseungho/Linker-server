@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.zerock.apiserver.dto.CommentDTO;
 import org.zerock.apiserver.service.CommentService;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -19,6 +20,11 @@ public class CommentController {
         return commentService.get(id);
     }
 
+    @GetMapping("/post/{pno}")
+    public List<CommentDTO> getCommentsByPost(@PathVariable("pno") Long pno) {
+        return commentService.getCommentsByPost(pno);
+    }
+
     @PostMapping("/")
     public Map<String, Long> register(@RequestBody CommentDTO commentDTO) {
         Long id = commentService.register(commentDTO);
@@ -26,8 +32,8 @@ public class CommentController {
     }
 
     @PutMapping("/{id}")
-    public Map<String, String> modify(@PathVariable("id") Long id, @RequestBody CommentDTO commentDTO) {
-        commentDTO.setId(id);
+    public Map<String, String> modify(@PathVariable("id") Long cno, @RequestBody CommentDTO commentDTO) {
+        commentDTO.setCno(cno);
         commentService.modify(commentDTO);
         return Map.of("RESULT", "SUCCESS");
     }

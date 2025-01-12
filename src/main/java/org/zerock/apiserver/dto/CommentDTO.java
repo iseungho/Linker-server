@@ -7,8 +7,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CommentDTO {
-    private Long id;
+    private Long cno ,writerId;
     private String content;
-    private Long mno;
     private Long postId;
 }
