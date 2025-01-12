@@ -23,4 +23,6 @@ public interface PostService {
     PostDTO entityToDTO(Post post, int commentCount);
 
     void initializePosts(List<PostDTO> postDTOList);
+
+    List<PostDTO> searchPosts(String keyword, String postType);
 }

@@ -46,4 +46,9 @@ public class LostPostController {
     public PageResponseDTO<PostDTO> getAllLostPosts(PageRequestDTO pageRequestDTO) {
         return postService.getListByPostType(pageRequestDTO,"LOST");
     }
+
+    @GetMapping("/search")
+    public List<PostDTO> searchPosts(@RequestParam String keyword) {
+        return postService.searchPosts(keyword, "LOST");
+    }
 }

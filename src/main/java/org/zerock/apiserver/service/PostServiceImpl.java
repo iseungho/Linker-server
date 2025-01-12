@@ -169,4 +169,9 @@ public class PostServiceImpl implements PostService {
         }
     }
 
+    @Override
+    public List<PostDTO> searchPosts(String keyword, String postType) {
+        List<Post> posts = postRepository.searchByTitle(keyword, postType);
+        return posts.stream().map(post -> entityToDTO(post, 0)).collect(Collectors.toList());
+    }
 }

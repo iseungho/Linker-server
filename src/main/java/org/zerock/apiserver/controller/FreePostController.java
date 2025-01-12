@@ -46,4 +46,9 @@ public class FreePostController {
     public PageResponseDTO<PostDTO> getAllFreePosts(PageRequestDTO pageRequestDTO) {
         return postService.getListByPostType(pageRequestDTO,"FREE");
     }
+
+    @GetMapping("/search")
+    public List<PostDTO> searchPosts(@RequestParam String keyword) {
+        return postService.searchPosts(keyword, "FREE");
+    }
 }
